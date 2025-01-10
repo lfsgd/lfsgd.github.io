@@ -4,7 +4,63 @@
     <title>Here is a WEB page on GitHub Pages</title>
 </head>
 <body>
-    <h1>Hey!</h1>
-    <p>Trololo.</p>
+    <h1>Preparing envirovment for TOGO and Brifcase</h1>
+Setup
+========================================
+# Setup ubuntu
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y sdkmanager python3 python3-venv python3-pip openjdk-11-jdk git curl unzip
+sudo apt install -y libgirepository1.0-dev libcairo2-dev gir1.2-gtk-3.0
+sudo apt install -y pkg-config
+
+# Add UA locale
+sudo sed -i 's/^# *\(uk_UA.UTF-8 UTF-8\)/\1/' /etc/locale.gen
+sudo locale-gen
+sudo update-locale LANG=uk_UA.UTF-8
+locale -a | grep uk_UA.UTF-8
+
+# Android command line tool
+mkdir -p ~/Android/cmdline-tools
+cd ~/Android/cmdline-tools
+curl -o commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip
+unzip commandlinetools.zip
+mv cmdline-tools latest
+cd -
+
+# apply changes
+echo 'export PATH=$HOME/Android/cmdline-tools/latest/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+
+# Install SDK Manager Tools:
+sudo sdkmanager "platform-tools" "platforms;android-31" "build-tools;31.0.0"
+
+# apply changes
+export ANDROID_HOME=$HOME/Android
+export PATH=$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
+source ~/.bashrc
+
+# Set Up the Python Virtual Environment
+python3 -m venv .venv10
+source .venv10/bin/activate
+pip install --upgrade pip setuptools wheel
+pip install toga briefcase
+
+2. Build APP
+==================================================
+
+briefcase new \
+  bundle_identifier mil.gov.ua
+  application_url   https://no.url.com
+  license           1
+  gui_framework     1
+
+rm -rf build && briefcase build android
+
+3. Connect to the device though WSL2
+==================================================
+adb tcpip 5555
+adb shell ip route
+adb connect 192.168.99.150:5555
+
 </body>
 </html>
