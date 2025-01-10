@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Environment Setup for Toga and Briefcase</title>
+    <title>Environment Setup for Beeware and Briefcase</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,72 +38,71 @@
 
     <div class="section">
         <h2>1. Setup Ubuntu</h2>
-        <pre><code>
-# Install required packages
-sudo apt update && sudo apt upgrade -y
-sudo apt install -y openjdk-11-jdk curl unzip
-sudo apt install -y git build-essential pkg-config sdkmanager
-sudo apt install -y python3-dev python3-venv python3-pip 
-sudo apt install -y libgirepository1.0-dev libcairo2-dev gir1.2-gtk-3.0 libcanberra-gtk3-module
-sudo apt update 
-
-# Add Ukrainian locale
-sudo sed -i 's/^# *\(uk_UA.UTF-8 UTF-8\)/\1/' /etc/locale.gen
-sudo locale-gen
-sudo update-locale LANG=uk_UA.UTF-8
-locale -a | grep uk_UA.UTF-8
+        <pre><code># Install required packages
+                    sudo apt update && sudo apt upgrade -y
+                    sudo apt install -y openjdk-11-jdk curl unzip
+                    sudo apt install -y git build-essential pkg-config sdkmanager
+                    sudo apt install -y python3-dev python3-venv python3-pip 
+                    sudo apt install -y libgirepository1.0-dev libcairo2-dev gir1.2-gtk-3.0 libcanberra-gtk3-module
+                    sudo apt update 
+                    
+                    # Add Ukrainian locale (optional)
+                    sudo sed -i 's/^# *\(uk_UA.UTF-8 UTF-8\)/\1/' /etc/locale.gen
+                    sudo locale-gen
+                    sudo update-locale LANG=uk_UA.UTF-8
+                    locale -a | grep uk_UA.UTF-8
         </code></pre>
     </div>
 
     <div class="section">
         <h2>2. Install Android Command Line Tools</h2>
         <pre><code># Create directory and download tools
-# <b>name on the ZIP file please check at the https://developer.android.com/studio at section "Command line tools only"</b>
-mkdir -p ~/Android/cmdline-tools
-cd ~/Android/cmdline-tools
-curl -o commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip
-unzip commandlinetools.zip
-mv cmdline-tools latest
-cd -
+                    # <b>name on the ZIP file please check at the https://developer.android.com/studio at section "Command line tools only"</b>
+                    mkdir -p ~/Android/cmdline-tools
+                    cd ~/Android/cmdline-tools
+                    curl -o commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip
+                    unzip commandlinetools.zip
+                    mv cmdline-tools latest
+                    cd -
 
-# Apply changes
-echo 'export PATH=$HOME/Android/cmdline-tools/latest/bin:$PATH' >> ~/.bashrc
-source ~/.bashrc
+                    # Apply changes
+                    echo 'export PATH=$HOME/Android/cmdline-tools/latest/bin:$PATH' >> ~/.bashrc
+                    source ~/.bashrc
 
-# Install SDK Manager Tools
-sudo sdkmanager "platform-tools" "platforms;android-31" "build-tools;31.0.0"
+                    # Install SDK Manager Tools
+                    sudo sdkmanager "platform-tools" "platforms;android-31" "build-tools;31.0.0"
         </code></pre>
     </div>
 
     <div class="section">
         <h2>3. Set Up Python Virtual Environment</h2>
         <pre><code># Create and activate virtual environment
-python3.10 -m venv .venv10
-source .venv10/bin/activate
+                    python3.10 -m venv .venv10
+                    source .venv10/bin/activate
 
-# Upgrade pip and install required packages
-pip install --upgrade pip setuptools wheel
-pip install toga briefcase
+                    # Upgrade pip and install required packages
+                    pip install --upgrade pip setuptools wheel
+                    pip install toga briefcase
         </code></pre>
     </div>
 
     <div class="section">
         <h2>4. Build the App</h2>
         <pre><code># Create a new Briefcase project
-briefcase new 
-# Clean and build the project
-rm -rf build && briefcase build android
+                    briefcase new 
+                    # Clean and build the project
+                    rm -rf build && briefcase build android
         </code></pre>
     </div>
 
     <div class="section">
         <h2>5. Connect to the Device Through WSL2</h2>
         <pre><code># Enable ADB over TCP and connect to the device
-# Under Windows
-adb tcpip 5555
-adb shell ip route  # to get device_ip
-# Under WSL
-adb connect device_ip_insert_here:5555
+                    # Under Windows
+                    adb tcpip 5555
+                    adb shell ip route  # to get device_ip
+                    # Under WSL
+                    adb connect device_ip_insert_here:5555
         </code></pre>
     </div>
 </body>
