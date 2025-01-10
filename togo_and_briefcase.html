@@ -89,12 +89,7 @@ pip install toga briefcase
     <div class="section">
         <h2>4. Build the App</h2>
         <pre><code># Create a new Briefcase project
-briefcase new \
-  bundle_identifier=mil.gov.ua \
-  application_url=https://no.url.com \
-  license=1 \
-  gui_framework=1
-
+briefcase new 
 # Clean and build the project
 rm -rf build && briefcase build android
         </code></pre>
@@ -103,9 +98,11 @@ rm -rf build && briefcase build android
     <div class="section">
         <h2>5. Connect to the Device Through WSL2</h2>
         <pre><code># Enable ADB over TCP and connect to the device
+# Under Windows
 adb tcpip 5555
-adb shell ip route
-adb connect 192.168.99.150:5555
+adb shell ip route  # to get device_ip
+# Under WSL
+adb connect device_ip_insert_here:5555
         </code></pre>
     </div>
 </body>
